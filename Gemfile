@@ -5,4 +5,5 @@ source 'https://rubygems.org'
 
 gem 'itamae', '1.9.11'
 gem 'serverspec', '2.41.2'
+gem 'fuubar', '2.2.0'
 gem 'rake', '12.2.1'
