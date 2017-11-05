@@ -13,6 +13,8 @@ GEM
       schash (~> 0.1.0)
       specinfra (>= 2.64.0, < 3.0.0)
       thor
+    itamae-plugin-resource-pip (1.0.0)
+      itamae (~> 1.2)
     multi_json (1.12.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -56,6 +58,7 @@ PLATFORMS
 DEPENDENCIES
   fuubar (= 2.2.0)
   itamae (= 1.9.11)
+  itamae-plugin-resource-pip (= 1.0.0)
   rake (= 12.2.1)
   serverspec (= 2.41.2)
 
