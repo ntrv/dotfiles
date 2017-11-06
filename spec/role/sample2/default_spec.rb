@@ -1,4 +1,4 @@
-require 'spec_helper_ssh'
+require 'spec_helper'
 
 describe package('apache2'), :if => os[:family] == 'ubuntu' do
   it { should be_installed }

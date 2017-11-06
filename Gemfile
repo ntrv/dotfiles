@@ -11,6 +11,7 @@ group :itamae do
 end
 
 group :serverspec do
+  gem 'docker-api', '1.33.6'
   gem 'serverspec', '2.41.2'
   gem 'fuubar', '2.2.0'
 end
