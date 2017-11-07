@@ -9,6 +9,6 @@ describe service('apache2'), :if => os[:family] == 'ubuntu' do
   it { should be_running }
 end
 
-describe port(80) do
-  it { should be_listening }
+describe file('/etc/redhat-release') do
+  it { should be_exist }
 end
