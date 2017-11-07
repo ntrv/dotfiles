@@ -15,3 +15,8 @@ group :serverspec do
   gem 'serverspec', '2.41.2'
   gem 'fuubar', '2.2.0'
 end
+
+group :test do
+  gem 'pry', '0.11.2'
+  gem 'pry-byebug', '3.5.0'
+end
