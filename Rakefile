@@ -1,17 +1,11 @@
 require 'rake'
 require 'rspec/core/rake_task'
 
-# task :spec    => 'spec:role:all'
-# task :default => :spec
-
 namespace :itamae do
   namespace :recipe do
-    targets = Dir.glob('./recipes/*').map do |dir|
-      next unless File.directory?(dir)
-      File.basename(dir)
-    end
-
     base_image = 'centos:7'
+
+    targets = create_dir_list('./recipes/*')
     targets.each do |target|
       desc "Run itamae using recipe #{target}"
       task target do
@@ -25,12 +19,9 @@ end
 namespace :spec do
   namespace :recipe do
     ENV['SPEC_BACKEND'] ||= 'DOCKER'
-    targets = Dir.glob('./spec/recipe/*').map do |dir|
-      next unless File.directory?(dir)
-      File.basename(dir)
-    end
 
-    task :all => targets
+    targets = create_dir_list('./spec/recipe/*')
+    task :all     => targets
     task :default => :all
 
     targets.each do |target|
@@ -43,11 +34,8 @@ namespace :spec do
 
   namespace :role do
     ENV['SPEC_BACKEND'] ||= 'SSH'
-    targets = Dir.glob('./spec/role/*').map do |dir|
-      next unless File.directory?(dir)
-      File.basename(dir)
-    end
 
+    targets = create_dir_list('./spec/role/*')
     task :all     => targets
     task :default => :all
 
@@ -58,5 +46,12 @@ namespace :spec do
         t.pattern = "spec/role/#{target}/*_spec.rb"
       end
     end
+  end
+end
+
+def create_dir_list(path)
+  Dir.glob(path).map do |dir|
+    next unless File.directory?(dir)
+    File.basename(dir)
   end
 end
