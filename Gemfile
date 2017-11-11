@@ -8,6 +8,7 @@ gem 'rake', '12.2.1'
 group :itamae do
   gem 'itamae', '1.9.11'
   gem 'itamae-plugin-resource-pip', '1.0.0'
+  gem 'ohai'
 end
 
 group :serverspec do
@@ -18,5 +19,6 @@ end
 
 group :test do
   gem 'pry', '0.11.2'
+  gem 'pry-doc'
   gem 'pry-byebug', '3.5.0'
 end
