@@ -11,5 +11,5 @@ end
 execute 'pip::install' do
   command 'easy_install pip'
   not_if 'type pip 1>/dev/null 2>&1'
-  only_if 'uname | grep -q Darwin'
+  only_if node[:platform] == 'darwin'
 end
