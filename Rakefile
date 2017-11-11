@@ -10,10 +10,13 @@ namespace :itamae do
       next unless File.directory?(dir)
       File.basename(dir)
     end
+
+    base_image = 'centos:7'
     targets.each do |target|
       desc "Run itamae using recipe #{target}"
       task target do
-        sh "bundle exec itamae docker recipes/#{target}/recipe.rb --image=centos:7"
+        target_dir = "recipes/#{target}"
+        sh "bundle exec itamae docker --ohai #{target_dir}/default.rb -y #{target_dir}/node.yml --image=#{base_image}"
       end
     end
   end
