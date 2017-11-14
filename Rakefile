@@ -35,13 +35,15 @@ module SpecTask
 
   namespace :spec do
     namespace :recipe do
+      ENV['SPEC_BACKEND'] = 'DOCKER'
       targets = self.create_dir_list('./spec/recipe/*')
       targets.each do |target|
-        desc "Run serverspec tests to #{target}"
-        RSpec::Core::RakeTask.new(target.to_sym, [:backend]) do |t, args|
-          args.with_defaults(backend: 'DOCKER')
-          ENV['SPEC_BACKEND'] ||= args['backend']
+        desc "Run serverspec tests for recipe #{target} using Docker"
+        RSpec::Core::RakeTask.new(target.to_sym, [:image, :host]) do |t, args|
+          args.with_defaults(image: 'centos:7', host: 'unix:///var/run/docker.sock')
           t.pattern = "spec/recipe/#{target}/*_spec.rb"
+          ENV['DOCKER_IMAGE'] = args['image']
+          ENV['DOCKER_HOST'] = args['host']
         end
       end
     end
