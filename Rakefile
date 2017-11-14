@@ -47,16 +47,13 @@ module SpecTask
     end
 
     namespace :role do
-      ENV['SPEC_BACKEND'] ||= 'SSH'
-
       targets = self.create_dir_list('./spec/role/*')
-      task :all     => targets
-      task :default => :all
-
       targets.each do |target|
         desc "Run serverspec tests to #{target}"
-        RSpec::Core::RakeTask.new(target.to_sym) do |t|
-          ENV['TARGET_HOST'] ||= target
+        RSpec::Core::RakeTask.new(target.to_sym, [:backend, :host]) do |t, args|
+          args.with_defaults(backend: 'SSH', host: 'localhost')
+          ENV['SPEC_BACKEND'] ||= args['backend']
+          ENV['TARGET_HOST'] ||= args['host']
           t.pattern = "spec/role/#{target}/*_spec.rb"
         end
       end
