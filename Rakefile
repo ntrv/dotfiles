@@ -16,14 +16,13 @@ module ItamaeTask
 
   namespace :itamae do
     namespace :recipe do
-      base_image = 'centos:7'
-
       targets = self.create_dir_list('./recipes/*')
       targets.each do |target|
         desc "Run itamae using recipe #{target}"
-        task target do
-          target_dir = "recipes/#{target}"
-          sh "bundle exec itamae docker --ohai #{target_dir}/default.rb -y #{target_dir}/node.yml --image=#{base_image}"
+        task target, [:image] do |target_fullname, args|
+          args.with_defaults(image: 'centos:7')
+          target_dst = "recipes/#{target}"
+          sh "bundle exec itamae docker --ohai #{target_dst}/default.rb -y #{target_dst}/node.yml --image=#{args['image']}"
         end
       end
     end
