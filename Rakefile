@@ -18,7 +18,7 @@ module ItamaeTask
     namespace :recipe do
       targets = self.create_dir_list('./recipes/*')
       targets.each do |target|
-        desc "Run itamae using recipe #{target}"
+        desc "Run itamae using recipe #{target} into Docker"
         task target, [:image] do |target_fullname, args|
           args.with_defaults(image: 'centos:7')
           target_dst = "recipes/#{target}"
@@ -54,9 +54,9 @@ module SpecTask
         desc "Run serverspec tests to #{target}"
         RSpec::Core::RakeTask.new(target.to_sym, [:backend, :host]) do |t, args|
           args.with_defaults(backend: 'SSH', host: 'localhost')
+          t.pattern = "spec/role/#{target}/*_spec.rb"
           ENV['SPEC_BACKEND'] ||= args['backend']
           ENV['TARGET_HOST'] ||= args['host']
-          t.pattern = "spec/role/#{target}/*_spec.rb"
         end
       end
     end
