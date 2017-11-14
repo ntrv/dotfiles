@@ -35,15 +35,12 @@ module SpecTask
 
   namespace :spec do
     namespace :recipe do
-      ENV['SPEC_BACKEND'] ||= 'DOCKER'
-
       targets = self.create_dir_list('./spec/recipe/*')
-      task :all     => targets
-      task :default => :all
-
       targets.each do |target|
         desc "Run serverspec tests to #{target}"
-        RSpec::Core::RakeTask.new(target.to_sym) do |t|
+        RSpec::Core::RakeTask.new(target.to_sym, [:backend]) do |t, args|
+          args.with_defaults(backend: 'DOCKER')
+          ENV['SPEC_BACKEND'] ||= args['backend']
           t.pattern = "spec/recipe/#{target}/*_spec.rb"
         end
       end
