@@ -39,11 +39,10 @@ module SpecTask
       targets = self.list_basedir('./spec/recipe/*')
       targets.each do |target|
         desc "Run serverspec tests for recipe #{target} using Docker"
-        RSpec::Core::RakeTask.new(target.to_sym, [:image, :host]) do |t, args|
-          args.with_defaults(image: 'centos:7', host: 'unix:///var/run/docker.sock')
+        RSpec::Core::RakeTask.new(target.to_sym, [:image]) do |t, args|
+          args.with_defaults(image: 'centos:7')
           t.pattern = "spec/recipe/#{target}/*_spec.rb"
           ENV['DOCKER_IMAGE'] = args['image']
-          ENV['DOCKER_HOST'] = args['host']
         end
       end
     end
@@ -52,11 +51,11 @@ module SpecTask
       targets = self.list_basedir('./spec/role/*')
       targets.each do |target|
         desc "Run serverspec tests to #{target}"
-        RSpec::Core::RakeTask.new(target.to_sym, [:backend, :host]) do |t, args|
-          args.with_defaults(backend: 'SSH', host: 'localhost')
+        RSpec::Core::RakeTask.new(target.to_sym, [:backend]) do |t, args|
+          args.with_defaults(backend: 'SSH')
           t.pattern = "spec/role/#{target}/*_spec.rb"
           ENV['SPEC_BACKEND'] ||= args['backend']
-          ENV['TARGET_HOST'] ||= args['host']
+          ENV['TARGET_HOST'] ||= target
         end
       end
     end
