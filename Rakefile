@@ -10,6 +10,14 @@ module TaskUtils
   end
 end
 
+module DefaultTask
+  extend Rake::DSL
+
+  task :default do
+    sh 'bundle exec rake -vT'
+  end
+end
+
 module ItamaeTask
   extend Rake::DSL
   extend TaskUtils
