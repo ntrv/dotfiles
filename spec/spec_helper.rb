@@ -1,7 +1,6 @@
 require 'serverspec'
 require 'net/ssh'
 require 'docker-api'
-require 'highline/import'
 
 case ENV['SPEC_BACKEND']
 when 'DOCKER'
@@ -15,13 +14,8 @@ when 'SSH'
   set :backend, :ssh
   set :request_pty, true
   set :path, '/sbin:/usr/local/sbin:$PATH'
-  set :request_pty, true
   set :host, ENV['TARGET_HOST']
-  opts = Net::SSH::Config.for(ENV['TARGET_HOST'])
-  opts[:user] = ENV['SSH_USER'] || ask('\nEnter user name: ')
-  opts[:password] = ENV['SSH_PASSWORD'] || ask('\nEnter login password: ')
-  set :sudo_password, ENV['SUDO_PASSWORD'] || ask('\nEnter sudo password: ')
-  set :ssh_options, opts
+  set :ssh_options, Net::SSH::Config.for(ENV['TARGET_HOST'])
   puts 'This is via SSH serverspec'
 else
   set :backend, :exec
