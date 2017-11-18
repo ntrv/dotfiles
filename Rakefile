@@ -2,7 +2,7 @@ require 'rake'
 require 'rspec/core/rake_task'
 
 module TaskUtils
-  def create_dir_list(path)
+  def list_basedir(path)
     Dir.glob(path).map do |dir|
       next unless File.directory?(dir)
       File.basename(dir)
@@ -16,7 +16,7 @@ module ItamaeTask
 
   namespace :itamae do
     namespace :recipe do
-      targets = self.create_dir_list('./recipes/*')
+      targets = self.list_basedir('./recipes/*')
       targets.each do |target|
         desc "Run itamae using recipe #{target} into Docker"
         task target, [:image] do |target_fullname, args|
@@ -36,7 +36,7 @@ module SpecTask
   namespace :spec do
     namespace :recipe do
       ENV['SPEC_BACKEND'] = 'DOCKER'
-      targets = self.create_dir_list('./spec/recipe/*')
+      targets = self.list_basedir('./spec/recipe/*')
       targets.each do |target|
         desc "Run serverspec tests for recipe #{target} using Docker"
         RSpec::Core::RakeTask.new(target.to_sym, [:image, :host]) do |t, args|
@@ -49,7 +49,7 @@ module SpecTask
     end
 
     namespace :role do
-      targets = self.create_dir_list('./spec/role/*')
+      targets = self.list_basedir('./spec/role/*')
       targets.each do |target|
         desc "Run serverspec tests to #{target}"
         RSpec::Core::RakeTask.new(target.to_sym, [:backend, :host]) do |t, args|
